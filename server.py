@@ -1,7 +1,7 @@
 from socket import *
 
 IP = '10.42.0.1'
-PORT = 5000
+PORT = 9600
 BUFLEN = 512
 listenSocket = socket(AF_INET, SOCK_STREAM)
  
