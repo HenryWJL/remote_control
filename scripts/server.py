@@ -6,7 +6,6 @@ from twisted.internet import reactor, protocol
 class EchoServer(protocol.Protocol):
     rospy.init_node("server", anonymous=True)
     publisher = rospy.Publisher('cmd_vel', Twist, queue_size=10)
-    rate = rate = rospy.Rate(5)
     
     
     def dataReceived(self, data):
@@ -15,25 +14,21 @@ class EchoServer(protocol.Protocol):
             message = Twist()
             message.linear.x = 1.5
             self.publisher.publish(message)
-            self.rate.sleep()
             
         elif command == 'backward':
             message = Twist()
             message.linear.x = -1.5
             self.publisher.publish(message)
-            self.rate.sleep()
             
         elif command == 'left':
             message = Twist()
             message.angular.z = 0.5
             self.publisher.publish(message)
-            self.rate.sleep()
             
         elif command == 'right':
             message = Twist()
             message.angular.z = -0.5
-            self.publisher.publish(message)
-            self.rate.sleep()       
+            self.publisher.publish(message)       
             
         self.transport.write(data)
 
