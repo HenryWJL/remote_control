@@ -12,7 +12,7 @@ class EchoClient(protocol.Protocol):
         self.factory.app.on_connection(self.transport)
 
     def dataReceived(self, data):
-        self.factory.app.print_message(data.decode('utf-8'))
+        pass
 
 
 class EchoClientFactory(protocol.ClientFactory):
@@ -26,6 +26,7 @@ class EchoClientFactory(protocol.ClientFactory):
 
     def clientConnectionLost(self, connector, reason):
         self.app.print_message('Lost connection.')
+        self.app.reset()
 
     def clientConnectionFailed(self, connector, reason):
         self.app.print_message('Connection failed.')
@@ -42,7 +43,8 @@ from kivy.uix.screenmanager import Screen, ScreenManager
 
 Builder.load_string("""
 <HomeScreen>:
-    ip: ip_input
+
+    ip_input: textBox
     connectButton: connect_button
 
     canvas.before:
@@ -57,7 +59,7 @@ Builder.load_string("""
         text: 'IP: '
     
     TextInput:
-        id: ip_input
+        id: textBox
         font_size: 30 
         size_hint: .3, .04
         center: root.width / 2 + 50, root.height / 2
@@ -87,10 +89,10 @@ Builder.load_string("""
 
     Button:
         id: exit_button
-        font_size: 14
+        font_size: 30
         size_hint: .2, .05
         center: root.width / 5, 9 * root.height / 10
-        text: 'Back'
+        text: '<<<'
         
 
     Button:
@@ -128,7 +130,6 @@ Builder.load_string("""
 
 
 class HomeScreen(Screen):
-    ip = ''
     prompt = StringProperty('')
 
 
@@ -156,16 +157,17 @@ class RemoteControlApp(App):
         sm = ScreenManager()
         sm.add_widget(self.homeScreen)
         sm.add_widget(self.controlScreen)
+        # sm.current = 'control'
         return sm
 
 
     def connect_to_server(self, *args):
-        IP = str(self.homeScreen.ip)
+        IP = self.homeScreen.ip_input.text
         reactor.connectTCP(IP, 8000, EchoClientFactory(self))
         
         
     def reset(self):
-        self.homeScreen.ip = ''
+        self.homeScreen.ip_input.text = ''
 
 
     def on_connection(self, connection):
