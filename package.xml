@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>remote_control</name>
+  <version>0.0.0</version>
+  <description>The package used for robot control</description>
+  <maintainer email="12112921@mail.sustech.edu.cn">Junlin Wang</maintainer>
+  <license>BSD 2-Clause "Simplified" License</license>
+  <author email="12112921@mail.sustech.edu.cn">Junlin Wang</author>
+  <buildtool_depend>catkin</buildtool_depend>
+  <depend>rospy</depend>
+  <depend>geometry_msgs</depend>
+</package>
