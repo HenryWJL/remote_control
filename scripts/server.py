@@ -4,6 +4,7 @@ from twisted.internet import reactor, protocol
 
 
 class EchoServer(protocol.Protocol):
+    rospy.init_node("server", anonymous=True)
     publisher = rospy.Publisher('cmd_vel', Twist, queue_size=10)
     rate = rate = rospy.Rate(5)
     
@@ -42,6 +43,5 @@ class EchoServerFactory(protocol.Factory):
 
 
 if __name__ == '__main__':
-    rospy.init_node("server", anonymous=True)
     reactor.listenTCP(8000, EchoServerFactory())
     reactor.run()
