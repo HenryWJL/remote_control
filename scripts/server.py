@@ -4,12 +4,8 @@ from twisted.internet import reactor, protocol
 
 
 class EchoServer(protocol.Protocol):
-    
-    
-    def __init__(self, publisher, rate):
-        super(EchoServer, self).__init__()
-        self.publisher = publisher
-        self.rate = rate
+    publisher = rospy.Publisher('cmd_vel', Twist, queue_size=10)
+    rate = rate = rospy.Rate(5)
     
     
     def dataReceived(self, data):
@@ -18,36 +14,34 @@ class EchoServer(protocol.Protocol):
             message = Twist()
             message.linear.x = 1.5
             self.publisher.publish(message)
-            rate.sleep()
+            self.rate.sleep()
             
         elif command == 'backward':
             message = Twist()
             message.linear.x = -1.5
             self.publisher.publish(message)
-            rate.sleep()
+            self.rate.sleep()
             
         elif command == 'left':
             message = Twist()
             message.angular.z = 0.5
             self.publisher.publish(message)
-            rate.sleep()
+            self.rate.sleep()
             
         elif command == 'right':
             message = Twist()
             message.angular.z = -0.5
             self.publisher.publish(message)
-            rate.sleep()       
+            self.rate.sleep()       
+            
+        self.transport.write(data)
 
 
 class EchoServerFactory(protocol.Factory):
-    def __init__(self, publisher, rate):
-        super(EchoServerFactory, self).__init__()
-        self.protocol = EchoServer(publisher, rate)
+    protocol = EchoServer
 
 
 if __name__ == '__main__':
     rospy.init_node("server", anonymous=True)
-    pub = rospy.Publisher('cmd_vel', Twist, queue_size=10)
-    rate = rospy.Rate(5)
-    reactor.listenTCP(8000, EchoServerFactory(pub, rate))
+    reactor.listenTCP(8000, EchoServerFactory())
     reactor.run()
