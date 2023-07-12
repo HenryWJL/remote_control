@@ -10,7 +10,11 @@ class EchoServer(protocol.Protocol):
     
     def dataReceived(self, data):
         command = data.decode('utf-8')
-        if command == 'forward':
+        if command == 'stop':
+            message = Twist()
+            self.publisher.publish(message)
+        
+        elif command == 'forward':
             message = Twist()
             message.linear.x = 1.5
             self.publisher.publish(message)
@@ -28,7 +32,10 @@ class EchoServer(protocol.Protocol):
         elif command == 'right':
             message = Twist()
             message.angular.z = -0.5
-            self.publisher.publish(message)       
+            self.publisher.publish(message)   
+            
+        elif command == 'grasp':
+            pass    
             
         self.transport.write(data)
 
