@@ -12,6 +12,6 @@
 		<arg name="arm_type_tel"	value="$(arg arm_type_tel)"/>		
 	</include>
 
-  	<node pkg="remote_control" type="server.py" name="server"/>
+  	<node pkg="remote_control_twisted" type="server.py" name="server"/>
  
 </launch>
