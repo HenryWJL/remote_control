@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <package format="2">
-  <name>remote_control_pc</name>
+  <name>remote_control_twisted</name>
   <version>0.0.0</version>
   <description>The package used for robot control</description>
   <maintainer email="12112921@mail.sustech.edu.cn">Junlin Wang</maintainer>
